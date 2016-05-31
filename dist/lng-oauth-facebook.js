@@ -2,12 +2,12 @@ angular.module('lngOauthFacebook', [
     //'fb-config', // example config object
     'angular-storage'
 ]).factory('$facebookOauthService', [
-    '$rootScope', 'fbConfig',
-    function $facebookOauthServiceProvider($all, config) {
+    '$rootScope', 'fbConfig', 'store',
+    function $facebookOauthServiceProvider($all, config, storage) {
         console.log('[module.svc.lngOauthFacebook]');
         var credentials,
                 oauthScopes = 'email,public_profile',
-                accessToken,
+                //accessToken,
                 authCallback,
                 errorCallback = function (errorMessage) {
                     console.log('$facebookOauthService ERROR -> ', errorMessage);
@@ -42,9 +42,15 @@ angular.module('lngOauthFacebook', [
             setAuthResponseHandler: function (authResponseHandler) {
                 authCallback = authResponseHandler;
             },
+            getCredentials: function() {
+                return credentials;
+            },
             getAccessToken: function () {
                 if (credentials)
                     return credentials.accessToken;
+            },
+            checkToken: function() {
+                __s.checkStatus(false);
             },
             handleLoginResponse: function (response, requireLogin) {
                 switch (response.status) {
