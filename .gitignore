@@ -1,0 +1,4 @@
+nbproject/*
+dist/config-test.js
+dist/config.js
+example/bower_components/*

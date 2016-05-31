@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html ng-app="example-app">
+    <head>
+        <title>Example App with Facebook Login</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="favicon.png" sizes="32x32" type="image/png" />
+        <script src="bower_components/angular/angular.min.js"></script>
+        <script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
+        <script src="bower_components/a0-angular-storage/dist/angular-storage.min.js"></script>
+    </head>
+    <body ng-controller="HelloFbCtrl">
+        <!-- Show if logged out -->
+        <div class="ng-hide" ng-show="!Profile">
+            Login with Facebook
+            <div>
+                <button type="button" ng-click="doLogin()">Login with Facebook</button>
+            </div>
+        </div>
+        <!-- Show if logged in -->
+        <div class="ng-hide" ng-show="Profile.id">
+            Welcome, {{Profile.first_name}}!
+            <div>
+                <button type="button" ng-click="doLogout()">Logout of Facebook</button>
+            </div>
+        </div>
+        <!--<script src="bower_components/"></script>-->
+        <script src="../dist/config-test.js"></script>
+        <script src="../dist/lng-oauth-facebook.js"></script>
+        <script>
+                angular.module('example-app', [
+                    'lngOauthFacebook'
+                ]).controller('HelloFbCtrl', [
+                    '$scope', '$facebookOauthService',
+                    function ($scope, $fbauth) {
+                        console.log('[module.HelloFbCtrl]');
+                        
+                        // set repsonse handler BEFORE initialization
+                        $fbauth.setAuthResponseHandler(function(profile) {
+                            console.log('.authResponseHandler() ->', arguments);
+                            $scope.Profile = profile;
+                            // refresh scope
+                            if(!$scope.$$phase)
+                                $scope.$apply();
+                        });
+                        
+                        // initialize facebook library
+                        $fbauth.init(function(){
+                            // check status WITHOUT prompting for login
+                            $fbauth.checkStatus(false);
+                        });
+                        
+                        $scope.doLogin = function() {
+                            $fbauth.login();
+                        };
+                        
+                        $scope.doLogout = function() {
+                            //$fbauth.logout();
+                            // Once loaded, you can call FB directly without referencing library
+                            FB.logout(function(){
+                                console.log('FB logout RESP ->', arguments);
+                            });
+                        };
+                    }
+                ]);
+        </script>
+    </body>
+</html>
