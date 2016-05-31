@@ -34,6 +34,7 @@ and open the template in the editor.
         <script src="../dist/lng-oauth-facebook.js"></script>
         <script>
                 angular.module('example-app', [
+                    'fb-config', 
                     'lngOauthFacebook'
                 ]).controller('HelloFbCtrl', [
                     '$scope', '$facebookOauthService',

@@ -1,5 +1,5 @@
 angular.module('lngOauthFacebook', [
-    'fb-config',
+    //'fb-config', // example config object
     'angular-storage'
 ]).factory('$facebookOauthService', [
     '$rootScope', 'fbConfig',
