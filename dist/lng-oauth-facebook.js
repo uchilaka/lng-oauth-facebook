@@ -6,6 +6,7 @@ angular.module('lngOauthFacebook', [
     function $facebookOauthServiceProvider($all, config) {
         console.log('[module.svc.lngOauthFacebook]');
         var credentials,
+                oauthScopes = 'email,public_profile',
                 accessToken,
                 authCallback,
                 errorCallback = function (errorMessage) {
@@ -55,8 +56,11 @@ angular.module('lngOauthFacebook', [
                         break;
 
                     default:
-                        if (requireLogin)
-                            FB.login(__s.handleLoginResponse, {scope: 'email,public_profile'});
+                        if (requireLogin) {
+                            if(config.scopes)
+                                oauthScopes = config.scopes;
+                            FB.login(__s.handleLoginResponse, { scope: oauthScopes });
+                        }
                         else {
                             console.log('Facebook status RESP ->', response);
                             errorCallback(response.status);

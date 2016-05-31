@@ -1,3 +1,4 @@
 angular.module('fb-config', []).constant('fbConfig', {
-    appId: 'realAppId'
+    appId: 'realAppId',
+    scopes: 'email,public_profile'
 });
