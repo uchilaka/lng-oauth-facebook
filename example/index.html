@@ -43,7 +43,7 @@ and open the template in the editor.
                         
                         // set repsonse handler BEFORE initialization
                         $fbauth.setAuthResponseHandler(function(profile) {
-                            console.log('.authResponseHandler() ->', arguments);
+                            console.log('.authResponseHandler() ->', profile);
                             $scope.Profile = profile;
                             // refresh scope
                             if(!$scope.$$phase)

@@ -52,13 +52,21 @@ angular.module('lngOauthFacebook', [
             checkToken: function() {
                 __s.checkStatus(false);
             },
+            handleAuthResponse: function(profile) {
+                if(profile && profile.hasOwnProperty('picture')) {
+                    profile.originalPicture = profile.picture;
+                    profile.picture = profile.originalPicture.data.url;
+                }
+                if(angular.isFunction(authCallback))
+                    authCallback.apply(null, arguments);
+            },
             handleLoginResponse: function (response, requireLogin) {
                 switch (response.status) {
                     case 'connected':
                         // get profile and return
                         console.log('User is connected! ->', response);
                         credentials = response.authResponse;
-                        FB.api('/me', 'get', {access_token: credentials.accessToken, fields: 'first_name,last_name,email,id,picture'}, authCallback);
+                        FB.api('/me', 'get', {access_token: credentials.accessToken, fields: 'first_name,last_name,email,id,picture.type(large)'}, __s.handleAuthResponse);
                         break;
 
                     default:
